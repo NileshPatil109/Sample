@@ -38,3 +38,4 @@
 38) Use of authentication and where it validate the cycle of of authentication/autherization. we are using attibutes [Attibutes] & [AllowsAnnynoms]
     if we validate it in configure method i.e. startup class then it configure once globally but the how it decide where controller/method level using attibutes then how it works. Detail life cycle of authentication and authorization in web api.
 39) how we return file from web api and what is there return type.
+

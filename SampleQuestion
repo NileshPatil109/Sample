@@ -1,0 +1,40 @@
+1) How to write custom filter
+2) I want response in camel case for every filed at global level (Which interface are using)
+3) Ways the Exception handling in .net core also in Global level(not hadling try catch at method level we want at global level)
+4) Dispose and Finalise
+5) Find charcter the maximun occuraences. (Hello)
+6) System.data and system.data.linq
+7) API Gateway
+8) unit testing
+9) ef core
+10) Version Control in API
+11) Start.Cs configuration 
+12) tranisent and scoped 
+13) boost the entity framework
+14) Parital class
+15) extension method
+16) why we used singlton if static is present.
+17) what are return type we used from repositery (Ienurable,Iqurable,IList)
+18) what is the use of async and await in c#/ .Net core api
+19) which List of Api is called most. genrate the report in .net core api / Web Api ( middleware/ message handler)
+20) actual use of dependncy injection in web api. what is the need.
+21) actual layer in .net core api (controller -> Ibusinuess -> BusinuessClass : Ibusinuess -> Irepositery -> Repositery : Irepositery
+22) What kind of delegate you used in developent 
+23) Task.WhenAll & Task.WaitAll difference
+24) diff between EventGrid & service bus. Why you usw Service Bus over the EventGrid
+25) What kind of data push into the Queue(class,Properties,Json) & in which format you passed it.
+26) what is the use of deadletter queue. did we manually push into dead letter queue.
+27) what is the use of deadletter queue, how to push the data into 
+28) Immediate & Deffered execution example & use
+29) What is use of trigger in SP
+30) DataBase/SP optimization, Profling tools
+31) Func,predicate & Action example 
+32) is string type value type or refernce type 
+33) How the flow can going from Angular to .Net core Api
+34) Design Pattern with use and sample coding. like Singleton,Facade,factory
+35) Which design pattern use conside Mobile entity , We have to use abstract class,derived class & interface
+36) why use sigleton over static class in depth , why when we use what.
+37) If static constructor is getting failed where it logs and what happen it gets called next time
+38) Use of authentication and where it validate the cycle of of authentication/autherization. we are using attibutes [Attibutes] & [AllowsAnnynoms]
+    if we validate it in configure method i.e. startup class then it configure once globally but the how it decide where controller/method level using attibutes then how it works. Detail life cycle of authentication and authorization in web api.
+39) how we return file from web api and what is there return type.

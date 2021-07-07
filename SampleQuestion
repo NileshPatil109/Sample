@@ -1,3 +1,323 @@
+using System;
+					
+public class Program
+{
+ 	public class BaseClass
+	{
+		public virtual void demo()
+		{
+			Console.WriteLine("BaseClass demo");
+		}
+	}
+	public class DerivedClass : BaseClass
+	{
+		public new void demo()
+		{
+			Console.WriteLine("DerivedClass demo");
+		}
+	}
+	public static void Main()
+	{
+		BaseClass b1 = new BaseClass();
+		b1.demo();
+		
+		DerivedClass d1 = new DerivedClass();
+		d1.demo();
+				
+		BaseClass b2 = new DerivedClass();
+		b2.demo();
+	}
+}
+
+OutPut : 
+
+BaseClass demo
+DerivedClass demo
+BaseClass demo
+
+1) Virtual -> Override -> override = Working as per normal behaviour
+2) Virtual -> Virtual -> Virtual = call indepent class outout e.g ClassA a = new ClassC() || o/p -> ClassA 
+3)  Virtual -> Override -> new/nothing = call backward derived class if we called object of base class. e.g ClassA a = new ClassC() || o/p -> ClassB ; ClassB b = new ClassC() || o/p -> ClassB
+
+----
+How do I switch column values from 0 to 1 and vice versa using the update statement? 
+
+declare @Table1 table 
+(
+  col1 CHAR(1) NOT NULL
+  , col2 BIT NOT NULL
+  );
+
+INSERT INTO @Table1 (col1, col2) VALUES
+('A', 1),
+('B', 1),
+('C', 1),
+('D', 0),
+('E', 0),
+('F', 0);
+
+UPDATE @Table1 SET col2 = (CASE col2 WHEN 1 THEN 0 ELSE 1 END);
+select * From @Table1
+
+https://www.databasestar.com/sql-set-operators/#:~:text=The%20difference%20between%20UNION%20and%20INTERSECT%20is%20that%20UNION%20gets,return%20A%2C%20B%20and%20C. // Union/unionall/intercept/except
+--------------------------
+usnig , and cross join we can fetch the data from unrelational tables. 
+
+select *
+from @Table1 t
+cross join
+@Table2 t1
+
+-------------------------------------------------------------------
+
+
+The INNER JOIN will return duplicates, if id is duplicated in either table. INTERSECT removes duplicates. The INNER JOIN will never return NULL, but INTERSECT will return NULL.
+
+CREATE TABLE #a (id INT);
+CREATE TABLE #b (id INT);
+
+INSERT INTO #a VALUES (1), (NULL), (2)
+INSERT INTO #b VALUES (1), (NULL), (3), (1)
+
+select * From #a
+select * From #b
+SELECT a.id FROM #a a
+INNER JOIN #b b ON a.id = b.id
+
+SELECT id FROM #a
+INTERSECT
+SELECT id FROM #b
+
+drop table #a
+drop table #b
+-------------------------------------------------
+
+https://www.c-sharpcorner.com/UploadFile/cda5ba/difference-between-char-nchar-varchar-and-nvarchar-data-ty/ // Diff between char,Varchar
+https://medium.com/@patilpoojaif/difference-between-cross-join-vs-full-outer-join-in-sql-server-a882dfc7a3d3 // Diff Cross & full outer join 
+https://www.guru99.com/clustered-vs-non-clustered-index.html // CLuster VS Non-CLuster
+https://www.c-sharpcorner.com/blogs/merge-query-in-sql // Merge in Sql
+@@RowCount  -  return the count
+@@identity - latest inserted record
+inserted & deleted - are the magic table used in the trigger
+
+https://dotnettutorials.net/lesson/how-to-raise-errors-explicitly-in-sql-server/  
+https://dotnettutorials.net/lesson/raiseerror-in-sql-server/
+But if we want then we can also raise an error in your programs in two different ways.
+ - Raiserror statement
+ - throw statement (new feature of SQL Server 2012)
+
+https://dotnettutorials.net/lesson/acid-properties-in-sql-server/ 
+Good for sql revision 
+--------------------------------------------------------------------------------------------
+
+//Rextester.Program.Main is the entry point for your code. Don't change it.
+//Microsoft (R) Visual C# Compiler version 2.9.0.63208 (958f2354)
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    public interface IEmpManager
+    {
+        decimal GetBonus();
+        decimal GetPayment();
+    }
+    public class PermentEmployee : IEmpManager
+    {
+        public decimal GetBonus()
+        {
+            return 10;
+        }
+        public decimal GetPayment()
+        {
+            return 20;
+        }
+    }
+    public class ContractEmployee : IEmpManager
+    {
+        public decimal GetBonus()
+        {
+            return 30;
+        }
+        public decimal GetPayment()
+        {
+            return 40;
+        }
+    }
+    public class EmplyeeFactory
+    {
+        IEmpManager iEmpManager = null;
+        public IEmpManager GetEmpType(String EmpType)
+        {
+             switch(EmpType)
+             {
+                 case "Per" : 
+                 iEmpManager = new PermentEmployee();
+                 break;
+                 case "Con" : 
+                  iEmpManager = new ContractEmployee();
+                  break;
+             }
+            return iEmpManager;
+        }        
+    }
+    public class Program
+    {        
+        public static void Main(string[] args)
+        {
+          EmplyeeFactory em = new EmplyeeFactory();
+          IEmpManager obj=  em.GetEmpType("Per");
+          IEmpManager obj1=  em.GetEmpType("Con");
+           
+            Console.WriteLine( obj.GetBonus());
+            Console.WriteLine( obj.GetPayment());
+            Console.WriteLine( obj1.GetBonus());
+            Console.WriteLine( obj1.GetPayment());
+        }
+    }
+}
+-------------------------------------------------------------------------
+
+//Rextester.Program.Main is the entry point for your code. Don't change it.
+//Microsoft (R) Visual C# Compiler version 2.9.0.63208 (958f2354)
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    public sealed class Singleton
+    {
+        Singleton()
+        {
+        }
+       
+        private static readonly object padlock = new object();
+        private static Singleton _singletonObj = null;
+        
+        public static Singleton SingletonObj
+        {
+            get
+            {
+                if(_singletonObj == null)
+                {
+                   lock(padlock)
+                    {
+                        _singletonObj = new Singleton();                        
+                    }
+                   
+                }
+                 return _singletonObj;
+            }
+        }
+        
+        public void GetName()
+        {
+               Console.WriteLine("Testttt");
+        }
+    }
+    
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+         var s1 = Singleton.SingletonObj;
+         s1.GetName();
+        }
+    }
+}
+
+--------------------------------------------
+//Interface with same name Explict Interface
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    
+    public interface ITest1 
+    {
+        void Getvalue();
+    }
+    public interface ITest2 
+    {
+        void Getvalue();
+    }
+    
+   public class TestProgram  : ITest1,ITest2
+    {
+        void ITest1.Getvalue()
+        {
+             Console.WriteLine("ITest1");
+        }
+        void ITest2.Getvalue()
+        {
+             Console.WriteLine("ITest2!");
+        }        
+    }
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+           ITest1 I1 = new TestProgram();
+            I1.Getvalue();
+           ITest2 I2 = new TestProgram();
+            I2.Getvalue();            
+            
+        }
+    }
+}
+---------------------------------------------------------------------------------------
+
+namespace Rextester
+{
+    public delegate int adddelegate(int value,int j);
+    public class Program
+    {
+        public static int add(int i , int j)
+        {
+            return i + j;
+        }
+        public static void Main(string[] args)
+        {
+            
+         adddelegate _adddelegate = new adddelegate(add);
+           Console.WriteLine(_adddelegate(10,10));
+            
+        }
+    }
+}
+
+------------------------------------------------------------------------
+// Method return the format in the Json format.
+
+[ApiController]
+[Route("[controller]")]
+[Produces("application/json")]
+public class WeatherForecastController : ControllerBase
+{
+}
+-------------------------------------
+
+[NonAction]  
+public IQueryable<MusicDTO> GetMusics()  
+{  
+  return db.Musics.Include(c=> c.Composer).Select(AsMusicDto);  
+}  
+
+
+------------------------------------------------------
+
+
+
 1) How to write custom filter
 2) I want response in camel case for every filed at global level (Which interface are using)
 3) Ways the Exception handling in .net core also in Global level(not hadling try catch at method level we want at global level)
@@ -26,7 +346,7 @@
 26) what is the use of deadletter queue. did we manually push into dead letter queue.
 27) what is the use of deadletter queue, how to push the data into 
 28) Immediate & Deffered execution example & use
-29) What is use of trigger in SP
+29) What is use of trigger in SP & it is possible to call trigger in SP
 30) DataBase/SP optimization, Profling tools
 31) Func,predicate & Action example 
 32) is string type value type or refernce type 
@@ -38,4 +358,234 @@
 38) Use of authentication and where it validate the cycle of of authentication/autherization. we are using attibutes [Attibutes] & [AllowsAnnynoms]
     if we validate it in configure method i.e. startup class then it configure once globally but the how it decide where controller/method level using attibutes then how it works. Detail life cycle of authentication and authorization in web api.
 39) how we return file from web api and what is there return type.
+40) Load Blancer work in also in that session management
+41) Fiter types in web Api 
+42) App.use & app.run difference 
+43) Is Multiple [Frombody] paramter is allowed in put/post api. Ans No compile time error 
+44) how to run two task paralley in web api. Ans. Task.WhenAll
+45) Use of ConfigureWait(false)
+46) async method is possible without await method
+47) Insert 10k record on button click EFcore Bulkinsert also other approach
+48) Ad authntication in detail
+49) Relection details to access the external libray method class 
+50) Error Hadling in Store procedure. transcation/try-catch/RaiserError/Rollback
+51) isolation level in sql server & Acid property & normalisation
+52) Serive bus details queue & topic
+53) Detail diff Event Grid/Event Hub/Serive Bus
+54) Life cycle of Garbage collection ? how we identify sate move from one another
+55) what is the managed and unmanaged code in .Net
+56) GC.Supress(),Finalize,try - catch , error handling, throw and throw ex difference.
+57) difference between dependency injection and repositery pattern
+58)  Difference between HashTable,Dictornary & List
 
+Angular :
+
+1) Difference between HostListener & HostBinder
+2) Can we createt the custom decorator
+3) shallow copy and deep copy in javascript ( Object.Assign & Spread operator) 
+4) what are the primitaive and other data type in javascript
+5) is struct/Generic in angular
+6) Detection statergy in angular
+7) @Host,@SkiSelf,@Skip,@ Resolution statergy
+8) Subject,BehaviourSubject,RelpaySubject
+9) Difference between extends & implements 
+10) RouteGards & interface which we are implemts
+11) Use of activate route Garurds
+12) 
+
+
+https://www.tektutorialshub.com/asp-net-core/asp-net-core-middleware-request-pipeline/    // Middleware 
+https://www.youtube.com/watch?v=oVAFvyICmbw   											  //Observer patteren
+https://www.dotnettricks.com/learn/webapi/aspnet-webapi-versioning-strategies-example 	  // Version in WEB API 
+https://csharp-video-tutorials.blogspot.com/2017/02/web-api-versioning-using-uri.html     // Version in WEB API 
+https://dev.to/99darshan/restful-web-api-versioning-with-asp-net-core-1e8g   // .Net Core Version 
+https://dotnettutorials.net/lesson/token-based-authentication-web-api/ // Bearer Token authentication Web api
+https://www.technical-recipes.com/2018/using-dependency-injection-in-web-api-applications-using-unity/ // Dependency Injection In web api
+https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/http-message-handlers // Handlers in web api
+
+// Web Api Details
+https://csharp-video-tutorials.blogspot.com/2016/09/aspnet-web-api-tutorial-for-beginners.html
+https://www.youtube.com/watch?v=iVHtKG0eU_s // .Net core(Nick Chapsas)
+
+// Scoped in the .Net core(DotNet Core Central)
+https://www.youtube.com/watch?v=7aismJa9P1k 
+
+JWT Token (DotNet Core Central)
+https://dotnetcorecentral.com/blog/authentication-handler-in-asp-net-core/
+
+Acton Filter in Dotnet Core
+https://code-maze.com/action-filters-aspnetcore/
+
+https://code-maze.com/aspnetcore-webapi-best-practices/    // Best Practices for Web Api
+https://code-maze.com/global-error-handling-aspnetcore/    //Error Handling 
+https://code-maze.com/net-core-web-development-part4/ **https://code-maze.com/async-generic-repository-pattern/ // Repositery pattern and Unity of work implemtations 
+https://code-maze.com/automapper-net-core/   
+https://code-maze.com/action-filters-aspnetcore/
+
+https://www.youtube.com/watch?v=jURT07NZonI    /// Token
+
+
+https://www.youtube.com/watch?v=hlUGZ6Hmv6s // Ocelet API
+Mapper for properties classes 
+-----------------
+** We can not mark static to as override, virtual, or abstract
+** abstract class cannot be sealed or static
+
+top level class: internal
+method: private
+members (unless an interface or enum): private (including nested classes)
+members (of interface or enum): public
+constructor: private (note that if no constructor is explicitly defined, a public default constructor will be automatically defined)
+delegate: internal
+interface: internal
+explicitly implemented interface member: public!
+
+
+
+
+----------------
+How to get controller and action name in OnActionExecuting?
+Ans : 
+You could try the ActionDescriptor of the ActionExecutingContext as follows:
+protected override void OnActionExecuting(ActionExecutingContext filterContext)
+{
+   string actionName = filterContext.ActionDescriptor.ActionName;
+   string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName
+   .....
+   base.OnActionExecuting(filterContext);
+}
+
+--------------------------------------------------------------
+
+Exception filters implement the System.Web.Http.Filters.IExceptionFilter interface. 
+The simplest way to write an exception filter is to derive from the System.Web.Http.Filters.ExceptionFilterAttribute class
+and override the OnException method.
+
+ [AcceptVerbs("GET", "HEAD")]
+ [NonAction]
+ [ActionName("Thumbnail")]
+ 
+ https://www.c-sharpcorner.com/article/asp-net-web-api-media-type-formatter/
+ https://www.tutorialsteacher.com/webapi/implement-put-method-in-web-api     // Good for EF as well as web api details 
+ 
+ [RoutePrefix("customers/{customerId}")]
+ [Route("users/{id:int:min(1)}")]          // Routes constraints  custom route constraints also posssible 
+ [Route("api/books")]
+---------------------------------------------------
+Angular 
+
+
+Primise and Observale diff : 
+https://www.youtube.com/watch?v=JFx3amVu1Yg // Kudevenkut 
+https://www.oreilly.com/content/wrapping-an-rxjs-observable-stream-into-an-angular-service/ // Observal stram data contain
+excusieve = new Subject <boolean>();
+
+- The entry point can be found in main.ts, unde the line platformBrowserDynamic().bootstrapModule(AppModule)
+https://stackblitz.com/edit/example-rxjs-observable-operator-concat-merge-677zdf?file=app%2Fapp.component.ts    // Merge and Concat diif
+https://stackblitz.com/edit/angular-rxjs-forkjoin-example-enk3yj?file=src%2Fapp%2Fapp.component.ts // Forkjoin 
+https://www.youtube.com/watch?v=ahogOJEGIOM&list=PL4cSPhAvl8xXyMkgaKIAzlBMK_mZblTPf&index=2   //SwitchMap
+
+https://stackblitz.com/edit/angular-4zsvsm?file=src%2Fapp%2Fprofile-editor%2Fprofile-editor.component.ts // Reactive Forms
+https://github.com/sudheerj/angular-interview-questions 
+https://stackblitz.com/edit/angular-8-reactive-form-validation?file=app%2Fapp.component.ts // Reactive Forms Validation
+https://www.positronx.io/angular-7-httpclient-http-service/ // Service
+https://www.youtube.com/watch?v=uVGnsmm9g-I // Resolution Modifier
+https://www.youtube.com/watch?v=KhUtM8skC5A
+Named Outlet in angular ? 
+when we used extends & implemets 
+diff canload and canactivate ?
+shallow copy and deep copy  ? https://www.freecodecamp.org/news/copying-stuff-in-javascript-how-to-differentiate-between-deep-and-shallow-copies-b6d8c1ef09cd/
+It is possible to change the value of primative copy ?
+https://www.youtube.com/watch?v=ZP_yhOr-41g  //view encapsulation
+
+
+=====********************===========================================================
+OOPS 
+
+1) https://www.c-sharpcorner.com/UploadFile/219d4d/ienumerable-vs-ienumerator-in-C-Sharp/ 
+2) https://www.c-sharpcorner.com/article/difference-between-iqueryable-and-ienumerable-while-working-in-linq/ 
+3) https://www.tutorialsteacher.com/articles/difference-between-hashtable-and-dictionary-in-csharp
+4)  https://www.dotnettricks.com/learn/linq/ienumerable-vs-ilist#:~:text=IList%20is%20used%20to%20access,collections%20like%20List%2C%20Array%20etc.&text=IList%20can%20find%20out%20the,IList%20supports%20deferred%20execution.       ///ienumerable-vs-ilist
+5) https://www.c-sharpcorner.com/blogs/singleordefault-vs-firstordefault-in-linq-query1#:~:text=First()%20%2D%20There%20is%20at,gives%20you%20the%20first%20one.
+6) http://crazyforcode.com/cant-static-class-singleton/#:~:text=Intention%20of%20a%20singleton%20pattern,of%20a%20class%20is%20instantiated.&text=-%20One%20of%20the%20key%20advantage,not%20inherit%20their%20instance%20members).   // why we use singleton instead of static class 
+7) Deferd execution VS immediate execution.
+	 https://www.c-sharpcorner.com/UploadFile/rahul4_saxena/deferred-vs-immediate-query-execution-in-linq/ 
+     https://www.dotnetcurry.com/linq/750/deferred-vs-immediate-query-execution-linq#:~:text=The%20basic%20difference%20between%20a,Average()%2C%20Max()%20etc.
+	 
+8) Async Programming
+ https://www.youtube.com/watch?v=CrUrvVatAxo   
+https://www.c-sharpcorner.com/article/async-and-await-in-c-sharp/ 	 
+9) Func & Action 
+	https://www.c-sharpcorner.com/UploadFile/ff0d0f/action-and-func-delegates-in-C-Sharp-net/
+	 
+10) https://www.c-sharpcorner.com/article/eager-loading-lazy-loading-and-explicit-loading-in-entity-framework/	 
+-----------------------------------------------
+
+
+
+
+Intro to Azure DevOps - Source Control, CI/CD, Automation, and more
+https://www.sqlshack.com/different-azure-storage-types-file-blob-queue-table/ 
+https://www.youtube.com/channel/UCscSurmy2BBa4hBspnyCcOw
+https://www.youtube.com/watch?v=BAFCiiOAXB8 
+https://www.youtube.com/watch?v=H-R2bCXfz8I 
+https://www.youtube.com/watch?v=xH5EY7FCFQw
+
+https://www.youtube.com/watch?v=jQma5Q1Aq6Q // Cosmos DB
+
+https://github.com/dimangulov/expenses
+
+
+Microservices :
+
+https://www.youtube.com/watch?v=mdzEKGlH0_Q
+
+
+Unit testing :
+
+https://www.c-sharpcorner.com/UploadFile/dacca2/fundamental-of-unit-testing-understand-mock-object-in-unit/
+
+
+
+Api Management : 
+
+1) Bakend API - Actual Api
+2) FroentEnd API - Showing to user 
+3) Product - Logical Grouping of Data 
+4) Deployment through - WSDL,App Services,FUN App by using Add API option 
+5) Inbound/ Outbound Processsing - Polices,caching,filterring , Limit Call 
+5) Echo Api - Sample Screen / List Of Api
+7) For Testing provide Editor 
+8) Also not required any Stub - we can create the Mock Response 
+9) Version Feature 
+10) Revision 
+11) Integration with the App Insight - Live dashboard/ Health
+12) Setting - Tab is used for authentication purpose like OAuth/Open ID connect 
+13) Internally Secured Need the secret key to access if don't use the Authentication
+
+
+Azure Cosmos DB :  https://www.youtube.com/watch?v=R_Fi59j6BMo
+1) Fully Managed,Globally Distrubated (Transpraent Multi Region Distrubtion 54 Region) ,Highly Avaliable ( For both Read and Write 99.9999) ,Low latency (witin 10 ms return the data)  
+2) Storing JSON Data 
+3) Elastic Sclae - You can sclare million or hundraed request per Sec
+4) Cosisteny Option where data Can be replication across the region - Stronly avaliable (immediately replicate across the location),eventually avaliable ( after some time it will be replicate ) 
+5) No SQL datbase - Work with the document 
+6) Multiple Api is present for querying the DataBase - Like SQL Core API 
+8) Request unit - use for the pricing the operation 
+9) Partion - Logical and Physical 
+10) Change Feed is used to call -> Azure Fuction,App services & Azure Notification Hub, Stram Processing(Apache Stram, Azure System Analytics), Data Movement(Blob,Data Lake,Comos DB) 
+11) Replicate Data Globally - On checkbox click you can access the data 
+12) assign value to object {} & [] used in Select stmt 
+13 https://www.dotnetcurry.com/microsoft-azure/1515/azure-cosmos-db
+-------------------------------------------------
+Azure : 
+1) Queue
+https://www.c-sharpcorner.com/UploadFile/a53555/everything-you-needed-to-know-about-azure-service-bus/ 
+https://www.c-sharpcorner.com/article/getting-started-with-azure-service-bus-queues-asp-net-core-background-services/
+  Queue Properties : - DefaultMessageTimeToLive ( Message is live in the queue) Default time is : 14 days
+                       - RequiresDuplicationDetection : Allows you to turn on message duplication detection (default 10 min and max 7 days)
+					   - DuplicateDetectionHistoryTimeWindow : 
+					   - AutoDeleteOnIdle : This is actually a timespan that denotes how long a queue can stay alive once it is idle before it is       deleted. The minimum time is 5 minutes.
+					   - MaxSizeInMegabytes: The total size of the queue. The default is 1GB. 
+Azure Ad Token
+https://dotnetplaybook.com/secure-a-net-core-api-using-bearer-authentication/	

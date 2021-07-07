@@ -1,1 +1,177 @@
 
+//Rextester.Program.Main is the entry point for your code. Don't change it.
+//Microsoft (R) Visual C# Compiler version 2.9.0.63208 (958f2354)
+
+//Find max number from the list/
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+		    //int[] lst = new int[]{10,4,30,6,4};
+            List<int> lst = new List<int>{10,40,30,6,4};
+			
+            int j = 0;
+            
+			// for(int i =0;i<lst.Length; i++)
+            for(int i =0;i<lst.Count; i++)
+            {
+                if( j < lst[i])
+                {
+                    j = lst[i];
+                }
+            }
+            
+            
+            //Your code goes here
+            Console.WriteLine(j);
+        }
+    }
+}
+
+----------------------------------
+
+// Return maximum occurring character in an input string
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+             int []count = new int[256];
+            
+            string str = "Helssssssssssssslo";
+            int len = str.Length;
+                for (int i = 0; i < len; i++)
+                count[str[i]]++;
+            
+            int max = -1; // Initialize max count
+            char result = ' '; // Initialize result
+            
+            // Traversing through the string and
+        // maintaining the count of each character
+            for (int i = 0; i < len; i++) {
+            if (max < count[str[i]]) {
+                max = count[str[i]];
+                result = str[i];
+            }
+        }
+            
+            //Your code goes here
+            Console.WriteLine(result + " " + max);
+        }
+    }
+}
+
+o/p :  s 13
+
+------------------------------------------------------
+
+// Reverse the string 
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+          string input = "Nilesh", reverse = "";
+            
+           for(int i = input.Length ; i > 0  ; i--)
+           {
+              
+               reverse = reverse + input[i - 1];
+           }
+            Console.WriteLine(reverse);
+            
+        }
+        
+    }
+}
+
+----------------------------------
+// Reverse of Number 
+
+Console.WriteLine("Enter a No. to reverse");  
+int Number = int.Parse(Console.ReadLine());  
+int Reverse = 0;  
+while(Number>0)  
+{  
+	int remainder = Number % 10;  
+	Reverse = (Reverse * 10) + remainder;  
+	Number = Number / 10;  
+}  
+Console.WriteLine("Reverse No. is {0}",Reverse);  
+Console.ReadLine(); 
+			
+			
+namespace Rextester
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+          object input_str  = 123456;
+          string reverse = "";
+          string input = Convert.ToString(input_str);
+            
+           for(int i = input.Length ; i > 0  ; i--)
+           {              
+               reverse = reverse + input[i - 1];
+           }
+            Console.WriteLine(Convert.ToInt32(reverse));                     
+        }
+        
+    }
+}
+
+-------------------------------------------
+
+
+// Linq Program for find even number 
+
+//Rextester.Program.Main is the entry point for your code. Don't change it.
+//Microsoft (R) Visual C# Compiler version 2.9.0.63208 (958f2354)
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Collections;
+
+namespace Rextester
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            List<int> intList = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            List<int> EvenNumbers = intList.Where(n => n % 2 == 0).ToList();
+                for(int i =0; i < EvenNumbers.Count; i++)
+                {
+                Console.WriteLine(EvenNumbers[i]);
+                }
+           
+        }
+    }
+}
+
